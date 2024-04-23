@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "930516571839",
+    "project_id": "elms-b657e",
+    "storage_bucket": "elms-b657e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930516571839:android:6f35b21be7c4022914580a",
+        "android_client_info": {
+          "package_name": "com.hasotion.elms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8f1JiRimQfDTzw1BBnORMRiDlVJKrTNI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

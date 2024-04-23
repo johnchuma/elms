@@ -64,13 +64,16 @@ class LoginPage extends StatelessWidget {
                               const SizedBox(
                                 height: 20,
                               ),
-                              textForm("Registration number",
-                                  "Enter registration number"),
+                              TextForm(
+                                  label: "Registration number",
+                                  hint: "Enter registration number"),
                               const SizedBox(
                                 height: 10,
                               ),
-                              textForm("Password", "Enter your password",
-                                  obscureText: true),
+                              TextForm(
+                                label: "Password",
+                                hint: "Enter your password",
+                              ),
                               const SizedBox(
                                 height: 20,
                               ),

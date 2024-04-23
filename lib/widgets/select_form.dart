@@ -1,9 +1,9 @@
 // ignore_for_file: non_constant_identifier_names
+import 'package:flutter/material.dart';
 import 'package:elms/utils/colors.dart';
 import 'package:elms/widgets/paragraph.dart';
-import 'package:flutter/material.dart';
 
-Widget TextForm(
+Widget selectForm(
     {hint,
     key,
     TextEditingController? textEditingController,
@@ -12,6 +12,7 @@ Widget TextForm(
     color,
     onChanged,
     label,
+    List<DropdownMenuItem<String>>? items,
     validator,
     isPassword = false,
     int? lines,
@@ -21,7 +22,7 @@ Widget TextForm(
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        paragraph(label ?? ""),
+        paragraph(label ?? "Select"),
         const SizedBox(
           height: 5,
         ),
@@ -31,14 +32,13 @@ Widget TextForm(
               color: background,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: TextFormField(
-                  obscureText: isPassword,
-                  initialValue: initialValue,
-                  cursorColor: textColor,
-                  onChanged: onChanged ?? (value) {},
-                  keyboardType: textInputType ?? TextInputType.text,
+                child: DropdownButtonFormField(
+                  items: items ?? [],
+                  value: textEditingController!.text,
+                  onChanged: (value) {
+                    textEditingController.text = value.toString();
+                  },
                   style: TextStyle(color: textColor),
-                  maxLines: lines ?? 1,
                   validator: validator ??
                       (value) {
                         if (value == "") {
@@ -46,13 +46,8 @@ Widget TextForm(
                         }
                         return null;
                       },
-                  controller: textEditingController,
                   decoration: InputDecoration(
                       hintStyle: TextStyle(fontSize: 15, color: mutedColor),
-                      suffixIcon: suffixIcon ??
-                          Container(
-                            width: 0,
-                          ),
                       border: InputBorder.none,
                       hintText: hint),
                 ),
