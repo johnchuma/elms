@@ -2,7 +2,7 @@ import 'package:elms/utils/app_colors.dart';
 import 'package:elms/widgets/paragraph.dart';
 import 'package:flutter/material.dart';
 
-Widget customButton(text, {onClick, background, color}) {
+Widget customButton(text, {onClick, background, loading, color}) {
   return GestureDetector(
     onTap: onClick ?? () {},
     child: ClipRRect(
@@ -13,8 +13,17 @@ Widget customButton(text, {onClick, background, color}) {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 18),
             child: Center(
-                child: paragraph(text,
-                    fontWeight: FontWeight.bold, color: color ?? Colors.white)),
+                child: loading == true
+                    ? const SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      )
+                    : paragraph(text,
+                        fontWeight: FontWeight.bold,
+                        color: color ?? Colors.white)),
           )),
     ),
   );

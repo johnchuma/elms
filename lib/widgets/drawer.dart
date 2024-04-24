@@ -1,5 +1,6 @@
 import 'package:elms/pages/home_page.dart';
-import 'package:elms/pages/students_page.dart';
+import 'package:elms/pages/modules_page.dart';
+import 'package:elms/pages/users_page.dart';
 import 'package:elms/utils/app_colors.dart';
 import 'package:elms/widgets/heading.dart';
 import 'package:elms/widgets/paragraph.dart';
@@ -42,9 +43,14 @@ Widget drawer() {
                   "page": const HomePage()
                 },
                 {
-                  "title": "Students",
+                  "title": "System Users",
                   "iconData": OctIcons.people,
                   "page": const StudentsPage()
+                },
+                {
+                  "title": "Modules",
+                  "iconData": OctIcons.apps,
+                  "page": const ModulesPage()
                 },
                 {
                   "title": "Curriculum",

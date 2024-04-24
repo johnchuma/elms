@@ -1,3 +1,5 @@
+import 'package:elms/controllers/module_controller.dart';
+import 'package:elms/models/module.dart';
 import 'package:elms/pages/announcements.dart';
 import 'package:elms/pages/learninghub_page.dart';
 import 'package:elms/pages/lecture_room.dart';
@@ -9,13 +11,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ModulePage extends StatelessWidget {
-  const ModulePage({super.key});
+  ModulePage({super.key});
+  ModuleController moduleController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    Module? module = moduleController.selectedModule.value;
     return Scaffold(
       backgroundColor: AppColors.backroundColor,
-      appBar: defaultAppbar("ETE 23093"),
+      appBar: defaultAppbar("${module?.department} ${module?.code}"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(children: [

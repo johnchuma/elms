@@ -31,16 +31,17 @@ class UserController extends GetxController {
         return User.fromDocumentSnapshot(userdocuments);
       }
       return null;
+      // ignore: empty_catches
     } catch (e) {}
     return null;
   }
 
-  Future<void> addUser({name, phone, reg, department, role}) async {
+  Future<void> addUser({name, phone, email, reg, department, role}) async {
     try {
-      var id = Timestamp.now().toDate().toString();
-      await firestore.collection("users").doc(id).set({
-        "id": id,
+      await firestore.collection("users").doc(email).set({
+        "id": email,
         "name": name,
+        "email": email,
         "phone": phone,
         "reg": reg,
         "department": department,
@@ -48,18 +49,23 @@ class UserController extends GetxController {
         "role": role,
         "createdAt": Timestamp.now()
       });
-    } catch (e) {}
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> updateUser(data) async {
     try {
       await firestore.collection("users").doc(selectedUser?.id).update(data);
-    } catch (e) {}
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> deleteUser() async {
     try {
       await firestore.collection("users").doc(selectedUser?.id).delete();
+      // ignore: empty_catches
     } catch (e) {}
   }
 

@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_unnecessary_containers
 
+import 'package:elms/controllers/module_controller.dart';
 import 'package:elms/pages/module_page.dart';
 import 'package:elms/utils/app_colors.dart';
 import 'package:elms/widgets/drawer.dart';
@@ -11,8 +12,19 @@ import 'package:icons_plus/icons_plus.dart';
 
 import '../widgets/heading.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    Get.put(ModuleController());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,59 +39,64 @@ class HomePage extends StatelessWidget {
         title: heading("Dashboard"),
         actions: const [],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Container(
-          child: Column(children: [
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                mutedText("2015/2020", fontWeight: FontWeight.bold),
-                const SizedBox(
-                  width: 15,
-                ),
-                mutedText("BENG ETE")
-              ],
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: GridView(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: 20,
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20),
-                  children: ["ETE 23093", "COU 34892", "ME 12342", "COU 24321"]
-                      .map((item) => GestureDetector(
-                            onTap: () {
-                              Get.to(() => const ModulePage());
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Container(
-                                color: AppColors.primaryColor,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    paragraph(item, color: Colors.white),
-                                    const SizedBox(height: 10),
-                                    const Icon(
-                                      OctIcons.graph,
-                                      size: 45,
-                                      color: Colors.white,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ))
-                      .toList()),
-            )
-          ]),
-        ),
-      ),
+      body: GetX<ModuleController>(
+          init: ModuleController(),
+          builder: (find) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                child: Column(children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      mutedText("Assign modules", fontWeight: FontWeight.bold),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: GridView(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisSpacing: 20,
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 20),
+                        children: find.modules
+                            .map((item) => GestureDetector(
+                                  onTap: () {
+                                    find.selectedModule.value = item;
+                                    Get.to(() => ModulePage());
+                                  },
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Container(
+                                      color: AppColors.primaryColor,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          paragraph(
+                                              "${item.department} ${item.code}",
+                                              color: Colors.white),
+                                          const SizedBox(height: 10),
+                                          const Icon(
+                                            OctIcons.apps,
+                                            size: 45,
+                                            color: Colors.white,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                            .toList()),
+                  )
+                ]),
+              ),
+            );
+          }),
     );
   }
 }

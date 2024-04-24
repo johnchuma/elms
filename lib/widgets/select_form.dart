@@ -37,6 +37,9 @@ Widget selectForm(
                   value: textEditingController!.text,
                   onChanged: (value) {
                     textEditingController.text = value.toString();
+                    if (onChanged != null) {
+                      onChanged();
+                    }
                   },
                   style: TextStyle(color: textColor),
                   validator: validator ??

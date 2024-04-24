@@ -1,6 +1,6 @@
 // ignore_for_file: unused_import
 
-import 'package:elms/controllers/user_controller.dart';
+import 'package:elms/controllers/module_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:elms/utils/colors.dart';
@@ -14,26 +14,30 @@ import 'package:elms/widgets/select_form.dart';
 import 'package:elms/widgets/text_form.dart';
 
 // ignore: must_be_immutable
-class AddStudent extends StatelessWidget {
-  AddStudent({super.key});
+class AddModule extends StatefulWidget {
+  const AddModule({super.key});
+
+  @override
+  State<AddModule> createState() => _AddModuleState();
+}
+
+class _AddModuleState extends State<AddModule> {
   TextEditingController nameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  TextEditingController regController = TextEditingController();
+  TextEditingController codeController = TextEditingController();
   TextEditingController departmentController =
       TextEditingController(text: "ETE");
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: background,
-      appBar: appbar(context, title: "Add Student"),
+      appBar: appbar(context, title: "Add module"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              mutedText(text: "Add new student"),
+              mutedText(text: "Add new module"),
               const SizedBox(
                 height: 10,
               ),
@@ -53,22 +57,18 @@ class AddStudent extends StatelessWidget {
                             return gradient.createShader(shader);
                           },
                           child:
-                              heading("Student details", color: Colors.white)),
+                              heading("Module details", color: Colors.white)),
                       const SizedBox(
                         height: 10,
                       ),
                       TextForm(
-                          hint: "Enter student name",
+                          hint: "Enter module name",
                           textEditingController: nameController,
-                          label: "Student name"),
+                          label: "Module name"),
                       TextForm(
-                          hint: "Enter student phone number",
-                          textEditingController: phoneController,
-                          label: "Phone number"),
-                      TextForm(
-                          hint: "Enter student registration number",
-                          textEditingController: regController,
-                          label: "Registration number"),
+                          hint: "Enter module code",
+                          textEditingController: codeController,
+                          label: "Module code"),
                       selectForm(
                           items: ["ETE", "ME", "CSE", "CE", "EE"]
                               .map((e) => DropdownMenuItem(
@@ -83,24 +83,26 @@ class AddStudent extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 50,
+                height: 40,
               ),
-              customButton("Add Student",
+              customButton("Add Module",
                   onClick: () => {
                         if (nameController.text.isEmpty ||
-                            phoneController.text.isEmpty ||
-                            regController.text.isEmpty)
+                            codeController.text.isEmpty)
                           {
                             Get.snackbar("Empty field",
-                                "Please fill the form to add expense")
+                                "Please fill the form to add module")
                           }
                         else
                           {
-                            UserController().addUser(
-                                name: nameController.text,
-                                department: departmentController.text,
-                                phone: phoneController.text,
-                                reg: regController.text)
+                            ModuleController()
+                                .addModule(
+                                    name: nameController.text,
+                                    department: departmentController.text,
+                                    code: codeController.text)
+                                .then((value) {
+                              Get.back();
+                            })
                           }
                       })
             ],

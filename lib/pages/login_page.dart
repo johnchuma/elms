@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import
 
+import 'package:elms/controllers/user_controller.dart';
 import 'package:elms/pages/home_page.dart';
 import 'package:elms/utils/app_colors.dart';
 import 'package:elms/widgets/custom_button.dart';
@@ -10,8 +11,23 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../widgets/heading.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  UserController userController = UserController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    Get.put(userController);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,20 +81,44 @@ class LoginPage extends StatelessWidget {
                                 height: 20,
                               ),
                               TextForm(
-                                  label: "Registration number",
-                                  hint: "Enter registration number"),
+                                  label: "Email address",
+                                  textEditingController: emailController,
+                                  hint: "Enter email address"),
                               const SizedBox(
                                 height: 10,
                               ),
                               TextForm(
                                 label: "Password",
+                                textEditingController: passwordController,
+                                isPassword: true,
                                 hint: "Enter your password",
                               ),
                               const SizedBox(
                                 height: 20,
                               ),
-                              customButton("Login", onClick: () {
-                                Get.to(() => const HomePage());
+                              customButton("Login", onClick: () async {
+                                if (emailController.text.isEmpty ||
+                                    passwordController.text.isEmpty) {
+                                  Get.snackbar("Empty fields",
+                                      "Please fill all fields to continue");
+                                } else {
+                                  var user = await userController.findUser(
+                                      email: emailController.text);
+
+                                  if (user != null) {
+                                    if (user.password ==
+                                        passwordController.text) {
+                                      userController.loggedInAs = user;
+                                      Get.to(() => const HomePage());
+                                    } else {
+                                      Get.snackbar("Wrong password",
+                                          "Your have entered the wrong password");
+                                    }
+                                  } else {
+                                    Get.snackbar("Unregistered email",
+                                        "This user is not registered");
+                                  }
+                                }
                               })
                             ],
                           ),
