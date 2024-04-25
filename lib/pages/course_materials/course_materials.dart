@@ -1,18 +1,33 @@
 // ignore_for_file: sized_box_for_whitespace
 
 import 'package:elms/controllers/course_material_controller.dart';
-import 'package:elms/pages/add_course_material.dart';
+import 'package:elms/pages/course_materials/add_course_material.dart';
+import 'package:elms/pages/course_materials/edit_course_material.dart';
 import 'package:elms/utils/colors.dart';
 import 'package:elms/utils/format_date.dart';
 import 'package:elms/utils/get_extension_from_path.dart';
 import 'package:elms/widgets/appbar.dart';
+import 'package:elms/widgets/bottomsheet_template.dart';
+import 'package:elms/widgets/heading.dart';
+import 'package:elms/widgets/menu_item.dart';
 import 'package:elms/widgets/muted.dart';
 import 'package:elms/widgets/paragraph.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CourseMaterials extends StatelessWidget {
+class CourseMaterials extends StatefulWidget {
   const CourseMaterials({super.key});
+
+  @override
+  State<CourseMaterials> createState() => _CourseMaterialsState();
+}
+
+class _CourseMaterialsState extends State<CourseMaterials> {
+  @override
+  void initState() {
+    Get.put(CourseMaterialController());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +56,22 @@ class CourseMaterials extends StatelessWidget {
                   child: ListView(
                       children: find.coursematerials
                           .map((item) => GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  find.selectedCourseMaterial.value = item;
+                                  Get.bottomSheet(bottomSheetTemplate(
+                                      widget: Column(
+                                    children: [
+                                      heading("Menu"),
+                                      menuItem(title: "View material"),
+                                      menuItem(
+                                          title: "Edit material",
+                                          onTap: () {
+                                            Get.back();
+                                            Get.to(() => EditCourseMaterial());
+                                          })
+                                    ],
+                                  )));
+                                },
                                 child: Padding(
                                   padding: const EdgeInsets.only(bottom: 10),
                                   child: ClipRRect(

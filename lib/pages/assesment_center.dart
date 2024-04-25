@@ -1,6 +1,6 @@
-import 'package:elms/pages/group_assignments.dart';
-import 'package:elms/pages/individual_assignments.dart';
-import 'package:elms/pages/quizzes_page.dart';
+import 'package:elms/pages/group_assignment/group_assignments.dart';
+import 'package:elms/pages/individual_assignment/individual_assignments.dart';
+import 'package:elms/pages/quiz/quizzes_page.dart';
 import 'package:elms/utils/app_colors.dart';
 import 'package:elms/widgets/default_appbar.dart';
 import 'package:elms/widgets/paragraph.dart';

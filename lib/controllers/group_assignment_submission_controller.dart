@@ -1,19 +1,24 @@
 // ignore_for_file: empty_catches
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elms/controllers/group_assignment_controller.dart';
 import 'package:elms/models/submission.dart';
 import 'package:get/get.dart';
 
-class SubmissionController extends GetxController {
+class GroupAssignmentSubmissionController extends GetxController {
   Rx<List<Submission>> submissionsReceiver = Rx<List<Submission>>([]);
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   List<Submission> get submissions => submissionsReceiver.value;
   Rx<Submission?> selectedSubmission = Rx<Submission?>(null);
+  GroupAssignmentController groupAssignmentController = Get.find();
   Submission? loggedInAs;
 
-  Stream<List<Submission>> getSubmissions() {
+  Stream<List<Submission>> getQuizSubmissions() {
     return firestore
         .collection("submissions")
+        .where("referenceId",
+            isEqualTo:
+                groupAssignmentController.selectedGroupAssignment.value?.id)
         .orderBy("createdAt", descending: true)
         .snapshots()
         .asyncMap((QuerySnapshot querySnapshot) async {
@@ -38,14 +43,13 @@ class SubmissionController extends GetxController {
     return null;
   }
 
-  Future<void> addSubmission(
-      {refrenceId, marks, userId, userName, path, link}) async {
+  Future<void> addSubmission({refrenceId, userId, userName, path, link}) async {
     try {
       String id = Timestamp.now().toDate().toString();
       await firestore.collection("submissions").doc(id).set({
         "id": id,
-        "refrenceId": refrenceId,
-        "marks": marks,
+        "referenceId": refrenceId,
+        "marks": 0.0,
         "userName": userName,
         "userId": userId,
         "path": path,
@@ -57,12 +61,9 @@ class SubmissionController extends GetxController {
     }
   }
 
-  Future<void> updateSubmission(data) async {
+  Future<void> updateSubmission(id, data) async {
     try {
-      await firestore
-          .collection("submissions")
-          .doc(selectedSubmission.value?.id)
-          .update(data);
+      await firestore.collection("submissions").doc(id).update(data);
     } catch (e) {
       rethrow;
     }
@@ -79,7 +80,7 @@ class SubmissionController extends GetxController {
 
   @override
   void onInit() {
-    submissionsReceiver.bindStream(getSubmissions());
+    submissionsReceiver.bindStream(getQuizSubmissions());
     super.onInit();
   }
 }

@@ -10,6 +10,7 @@ import 'package:elms/widgets/paragraph.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+// ignore: must_be_immutable
 class ModulePage extends StatelessWidget {
   ModulePage({super.key});
   ModuleController moduleController = Get.find();

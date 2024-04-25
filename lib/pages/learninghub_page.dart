@@ -1,6 +1,6 @@
 import 'package:elms/pages/assesment_center.dart';
-import 'package:elms/pages/course_materials.dart';
-import 'package:elms/pages/tutorials_page.dart';
+import 'package:elms/pages/course_materials/course_materials.dart';
+import 'package:elms/pages/tutorials/tutorials_page.dart';
 import 'package:elms/utils/app_colors.dart';
 import 'package:elms/widgets/default_appbar.dart';
 import 'package:elms/widgets/paragraph.dart';

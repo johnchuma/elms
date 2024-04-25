@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import
 
 import 'package:elms/controllers/user_controller.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:elms/utils/colors.dart';
@@ -13,7 +14,6 @@ import 'package:elms/widgets/paragraph.dart';
 import 'package:elms/widgets/select_form.dart';
 import 'package:elms/widgets/text_form.dart';
 
-// ignore: must_be_immutable
 class AddUser extends StatefulWidget {
   const AddUser({super.key});
 
@@ -131,6 +131,10 @@ class _AddUserState extends State<AddUser> {
                                     phone: phoneController.text,
                                     reg: regController.text)
                                 .then((value) {
+                              FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                      email: emailController.text,
+                                      password: '123456');
                               Get.back();
                             })
                           }

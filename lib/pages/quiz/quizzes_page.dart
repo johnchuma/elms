@@ -1,6 +1,9 @@
 import 'package:elms/controllers/quiz_controller.dart';
-import 'package:elms/pages/add_quiz.dart';
-import 'package:elms/pages/quiz_submission.dart';
+import 'package:elms/controllers/user_controller.dart';
+import 'package:elms/pages/quiz/add_quiz.dart';
+import 'package:elms/pages/quiz/edit_quiz.dart';
+import 'package:elms/pages/quiz/quiz_submission.dart';
+import 'package:elms/pages/quiz/view_quiz_submissions.dart';
 import 'package:elms/utils/colors.dart';
 import 'package:elms/utils/format_date.dart';
 import 'package:elms/utils/get_extension_from_path.dart';
@@ -27,6 +30,7 @@ class _QuizzesAndTestsState extends State<QuizzesAndTests> {
     super.initState();
   }
 
+  UserController userController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,14 +66,26 @@ class _QuizzesAndTestsState extends State<QuizzesAndTests> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       heading("Menu"),
-                                      menuItem(title: "View submissions"),
+                                      menuItem(
+                                          title: "View submissions",
+                                          onTap: () {
+                                            Get.back();
+                                            Get.to(() =>
+                                                const ViewQuizSubmissions());
+                                          }),
                                       menuItem(
                                           title: "Quiz submission",
                                           onTap: () {
+                                            Get.back();
                                             Get.to(
                                                 () => const QuizSubmission());
                                           }),
-                                      menuItem(title: "Edit quiz"),
+                                      menuItem(
+                                          title: "Edit quiz",
+                                          onTap: () {
+                                            Get.back();
+                                            Get.to(() => const EditQuiz());
+                                          }),
                                     ],
                                   )));
                                 },
@@ -106,9 +122,18 @@ class _QuizzesAndTestsState extends State<QuizzesAndTests> {
                                                   ],
                                                 ),
                                               ),
-                                              heading("Not submited",
-                                                  fontSize: 11,
-                                                  color: Colors.red)
+                                              if (userController
+                                                      .loggedInAs?.role ==
+                                                  "Student")
+                                                item.students.contains(
+                                                        userController
+                                                            .loggedInAs?.id)
+                                                    ? heading("Submitted",
+                                                        fontSize: 11,
+                                                        color: Colors.green)
+                                                    : heading("Not submited",
+                                                        fontSize: 11,
+                                                        color: Colors.red)
                                             ],
                                           ),
                                         ),

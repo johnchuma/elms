@@ -3,13 +3,13 @@
 import 'dart:io';
 
 import 'package:elms/controllers/course_material_controller.dart';
+import 'package:elms/controllers/group_assignment_controller.dart';
 import 'package:elms/controllers/module_controller.dart';
+import 'package:elms/models/group_assignment.dart';
 import 'package:elms/utils/get_link.dart';
 import 'package:elms/utils/pick_file.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:elms/utils/colors.dart';
 import 'package:elms/widgets/appbar.dart';
@@ -20,17 +20,19 @@ import 'package:elms/widgets/muted_text.dart';
 import 'package:elms/widgets/paragraph.dart';
 import 'package:elms/widgets/select_form.dart';
 import 'package:elms/widgets/text_form.dart';
+import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
-class AddCourseMaterial extends StatefulWidget {
-  const AddCourseMaterial({super.key});
+class AddGroupAssignment extends StatefulWidget {
+  const AddGroupAssignment({super.key});
 
   @override
-  State<AddCourseMaterial> createState() => _AddCourseMaterialState();
+  State<AddGroupAssignment> createState() => _AddGroupAssignmentState();
 }
 
-class _AddCourseMaterialState extends State<AddCourseMaterial> {
+class _AddGroupAssignmentState extends State<AddGroupAssignment> {
   TextEditingController titleController = TextEditingController();
+  TextEditingController deadlineController = TextEditingController();
   TextEditingController filesController = TextEditingController();
   File? file;
   bool loading = false;
@@ -38,14 +40,14 @@ class _AddCourseMaterialState extends State<AddCourseMaterial> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: background,
-      appBar: appbar(context, title: "Add course materials"),
+      appBar: appbar(context, title: "Add Group Assignment"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              mutedText(text: "Add new couse material"),
+              mutedText(text: "Add new group assignment"),
               const SizedBox(
                 height: 10,
               ),
@@ -64,7 +66,7 @@ class _AddCourseMaterialState extends State<AddCourseMaterial> {
                           shaderCallback: (shader) {
                             return gradient.createShader(shader);
                           },
-                          child: heading("Course material details",
+                          child: heading("Group Assignment details",
                               color: Colors.white)),
                       const SizedBox(
                         height: 10,
@@ -72,7 +74,11 @@ class _AddCourseMaterialState extends State<AddCourseMaterial> {
                       TextForm(
                           hint: "Enter title",
                           textEditingController: titleController,
-                          label: "Course title"),
+                          label: "Group Assignment title"),
+                      datePicker(
+                          label: "Deadline",
+                          hint: "DD/MM/YYYY",
+                          textEditingController: deadlineController),
                       paragraph("File"),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -94,7 +100,7 @@ class _AddCourseMaterialState extends State<AddCourseMaterial> {
                                           Icon(
                                             Icons.upload_file,
                                             color: mutedColor,
-                                            size: 80,
+                                            size: 60,
                                           ),
                                           mutedText(text: "Pick document")
                                         ],
@@ -111,7 +117,7 @@ class _AddCourseMaterialState extends State<AddCourseMaterial> {
               const SizedBox(
                 height: 40,
               ),
-              customButton("Add course material", loading: loading,
+              customButton("Add group assignment", loading: loading,
                   onClick: () {
                 if (titleController.text.isEmpty) {
                   Get.snackbar(
@@ -121,9 +127,10 @@ class _AddCourseMaterialState extends State<AddCourseMaterial> {
                     loading = true;
                   });
                   getLink(file).then((url) {
-                    CourseMaterialController()
-                        .addCourseMaterial(
+                    GroupAssignmentController()
+                        .addGroupAssignment(
                             title: titleController.text,
+                            date: DateTime.parse(deadlineController.text),
                             path: file?.path.split('/').last,
                             link: url)
                         .then((value) {

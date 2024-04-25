@@ -4,13 +4,11 @@ import 'dart:io';
 
 import 'package:elms/controllers/course_material_controller.dart';
 import 'package:elms/controllers/module_controller.dart';
-import 'package:elms/controllers/quiz_controller.dart';
+import 'package:elms/controllers/tutorial_controller.dart';
 import 'package:elms/utils/get_link.dart';
 import 'package:elms/utils/pick_file.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:elms/utils/colors.dart';
 import 'package:elms/widgets/appbar.dart';
@@ -21,19 +19,18 @@ import 'package:elms/widgets/muted_text.dart';
 import 'package:elms/widgets/paragraph.dart';
 import 'package:elms/widgets/select_form.dart';
 import 'package:elms/widgets/text_form.dart';
-import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
-class AddQuiz extends StatefulWidget {
-  const AddQuiz({super.key});
+class AddTutorial extends StatefulWidget {
+  const AddTutorial({super.key});
 
   @override
-  State<AddQuiz> createState() => _AddQuizState();
+  State<AddTutorial> createState() => _AddTutorialState();
 }
 
-class _AddQuizState extends State<AddQuiz> {
+class _AddTutorialState extends State<AddTutorial> {
   TextEditingController titleController = TextEditingController();
-  TextEditingController deadlineController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
   TextEditingController filesController = TextEditingController();
   File? file;
   bool loading = false;
@@ -41,14 +38,14 @@ class _AddQuizState extends State<AddQuiz> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: background,
-      appBar: appbar(context, title: "Add Quiz"),
+      appBar: appbar(context, title: "Add tutorials"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              mutedText(text: "Add new quiz"),
+              mutedText(text: "Add new tutorials"),
               const SizedBox(
                 height: 10,
               ),
@@ -67,18 +64,20 @@ class _AddQuizState extends State<AddQuiz> {
                           shaderCallback: (shader) {
                             return gradient.createShader(shader);
                           },
-                          child: heading("Quiz details", color: Colors.white)),
+                          child: heading("Tutorials details",
+                              color: Colors.white)),
                       const SizedBox(
                         height: 10,
                       ),
                       TextForm(
                           hint: "Enter title",
                           textEditingController: titleController,
-                          label: "Quiz title"),
-                      datePicker(
-                          label: "Deadline",
-                          hint: "DD/MM/YYYY",
-                          textEditingController: deadlineController),
+                          label: "Course title"),
+                      TextForm(
+                          hint: "Enter tutorial summary",
+                          textEditingController: descriptionController,
+                          lines: 5,
+                          label: "Tutorial summary"),
                       paragraph("File"),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -100,7 +99,7 @@ class _AddQuizState extends State<AddQuiz> {
                                           Icon(
                                             Icons.upload_file,
                                             color: mutedColor,
-                                            size: 60,
+                                            size: 80,
                                           ),
                                           mutedText(text: "Pick document")
                                         ],
@@ -117,8 +116,7 @@ class _AddQuizState extends State<AddQuiz> {
               const SizedBox(
                 height: 40,
               ),
-              customButton("Add course material", loading: loading,
-                  onClick: () {
+              customButton("Add tutorial", loading: loading, onClick: () {
                 if (titleController.text.isEmpty) {
                   Get.snackbar(
                       "Empty field", "Please fill the form to add course");
@@ -127,10 +125,10 @@ class _AddQuizState extends State<AddQuiz> {
                     loading = true;
                   });
                   getLink(file).then((url) {
-                    QuizController()
-                        .addQuiz(
+                    TutorialController()
+                        .addTutorial(
                             title: titleController.text,
-                            date: DateTime.parse(deadlineController.text),
+                            introduction: descriptionController.text,
                             path: file?.path.split('/').last,
                             link: url)
                         .then((value) {

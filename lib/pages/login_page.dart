@@ -6,6 +6,7 @@ import 'package:elms/utils/app_colors.dart';
 import 'package:elms/widgets/custom_button.dart';
 import 'package:elms/widgets/paragraph.dart';
 import 'package:elms/widgets/text_form.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -109,6 +110,11 @@ class _LoginPageState extends State<LoginPage> {
                                     if (user.password ==
                                         passwordController.text) {
                                       userController.loggedInAs = user;
+                                      FirebaseAuth.instance
+                                          .signInWithEmailAndPassword(
+                                              email: emailController.text,
+                                              password:
+                                                  passwordController.text);
                                       Get.to(() => const HomePage());
                                     } else {
                                       Get.snackbar("Wrong password",

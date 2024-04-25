@@ -5,7 +5,7 @@ class Submission {
   late String userId;
   late String referenceId;
   late String link;
-  late double marks;
+  late double marks = 0;
   late String path;
   late String id;
   late Timestamp createdAt;
@@ -14,7 +14,7 @@ class Submission {
     id = documentSnapshot["id"];
     path = documentSnapshot["path"];
     link = documentSnapshot["link"];
-    marks = documentSnapshot["marks"];
+    marks = double.parse(documentSnapshot["marks"].toString());
     userName = documentSnapshot["userName"];
     userId = documentSnapshot["userId"];
     referenceId = documentSnapshot["referenceId"];
