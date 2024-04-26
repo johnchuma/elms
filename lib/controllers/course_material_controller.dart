@@ -18,6 +18,7 @@ class CourseMaterialController extends GetxController {
   Stream<List<CourseMaterial>> getCourseMaterials() {
     return firestore
         .collection("coursematerials")
+        .where("moduleId",isEqualTo: moduleController.selectedModule.value?.id)
         .orderBy("createdAt", descending: true)
         .snapshots()
         .asyncMap((QuerySnapshot querySnapshot) async {

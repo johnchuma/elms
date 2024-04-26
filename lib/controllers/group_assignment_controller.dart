@@ -17,6 +17,7 @@ class GroupAssignmentController extends GetxController {
   Stream<List<GroupAssignment>> getGroupAssignments() {
     return firestore
         .collection("groupassignments")
+        .where("moduleId",isEqualTo: moduleController.selectedModule.value?.id)
         .orderBy("createdAt", descending: true)
         .snapshots()
         .asyncMap((QuerySnapshot querySnapshot) async {

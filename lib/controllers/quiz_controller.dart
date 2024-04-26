@@ -17,6 +17,7 @@ class QuizController extends GetxController {
     return firestore
         .collection("quizes")
         .orderBy("createdAt", descending: true)
+        .where("moduleId",isEqualTo: moduleController.selectedModule.value?.id)
         .snapshots()
         .asyncMap((QuerySnapshot querySnapshot) async {
       List<Quiz> quizes = [];

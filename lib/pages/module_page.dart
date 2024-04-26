@@ -1,6 +1,7 @@
 import 'package:elms/controllers/module_controller.dart';
 import 'package:elms/models/module.dart';
-import 'package:elms/pages/announcements.dart';
+import 'package:elms/pages/announcements/announcements_page.dart';
+import 'package:elms/pages/groups/groups_page.dart';
 import 'package:elms/pages/learninghub_page.dart';
 import 'package:elms/pages/lecture_room.dart';
 import 'package:elms/pages/team_workspace.dart';
@@ -34,7 +35,9 @@ class ModulePage extends StatelessWidget {
               {"title": "Learning Hub", "page": const LearningHubPage()},
               {"title": "Lecture Room", "page": const LectureRoom()},
               {"title": "Team Workspace", "page": const TeamWorkspace()},
-              {"title": "Anouncements", "page": const Anouncements()},
+              {"title": "Anouncements", "page": const AnnouncementsPage()},
+              {"title": "Groups", "page": const GroupsPage()},
+
             ]
                     .map((item) => GestureDetector(
                           onTap: () {

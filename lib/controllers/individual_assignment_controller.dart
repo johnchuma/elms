@@ -19,6 +19,7 @@ class IndividualAssignmentController extends GetxController {
   Stream<List<IndividualAssignment>> getIndividualAssignments() {
     return firestore
         .collection("individualassignments")
+        .where("moduleId",isEqualTo: moduleController.selectedModule.value?.id)
         .orderBy("createdAt", descending: true)
         .snapshots()
         .asyncMap((QuerySnapshot querySnapshot) async {
