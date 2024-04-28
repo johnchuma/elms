@@ -8,6 +8,7 @@ import 'package:elms/pages/quiz/quiz_submission.dart';
 import 'package:elms/pages/group_assignment/view_group_assignment_submissions.dart';
 import 'package:elms/pages/quiz/view_quiz_submissions.dart';
 import 'package:elms/utils/colors.dart';
+import 'package:elms/utils/find_my_role.dart';
 import 'package:elms/utils/format_date.dart';
 import 'package:elms/utils/get_extension_from_path.dart';
 import 'package:elms/widgets/appbar.dart';
@@ -39,6 +40,7 @@ class _GroupAssignmentsState extends State<GroupAssignments> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: appbar(context, title: "Group Assignments", actions: [
+        if(currentUserRole() == "Lecture")
         GestureDetector(
             onTap: () {
               Get.to(() => const AddGroupAssignment());
@@ -69,6 +71,8 @@ class _GroupAssignmentsState extends State<GroupAssignments> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       heading("Menu"),
+
+                                      if(currentUserRole() == "Lecture")
                                       menuItem(
                                           title: "View submissions",
                                           onTap: () {
@@ -83,6 +87,7 @@ class _GroupAssignmentsState extends State<GroupAssignments> {
                                             Get.to(() =>
                                                 const GroupAssignmentSubmission());
                                           }),
+                                      if(currentUserRole() == "Lecture")
                                       menuItem(
                                           title: "Edit assignment",
                                           onTap: () {

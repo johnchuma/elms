@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elms/controllers/individual_assignment_controller.dart';
-import 'package:elms/controllers/quiz_controller.dart';
 import 'package:elms/models/submission.dart';
 import 'package:get/get.dart';
 

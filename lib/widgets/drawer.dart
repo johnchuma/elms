@@ -1,7 +1,10 @@
+import 'package:elms/controllers/user_controller.dart';
 import 'package:elms/pages/home_page.dart';
+import 'package:elms/pages/login_page.dart';
 import 'package:elms/pages/modules_page.dart';
 import 'package:elms/pages/users_page.dart';
 import 'package:elms/utils/app_colors.dart';
+import 'package:elms/utils/find_my_role.dart';
 import 'package:elms/widgets/heading.dart';
 import 'package:elms/widgets/paragraph.dart';
 import 'package:flutter/material.dart';
@@ -40,30 +43,31 @@ Widget drawer() {
                 {
                   "title": "Dashboard",
                   "iconData": OctIcons.home,
+                  "roles":['Admin','Lecture','Student'],
                   "page": const HomePage()
                 },
                 {
                   "title": "System Users",
                   "iconData": OctIcons.people,
+                  "roles":['Admin'],
                   "page": const StudentsPage()
                 },
                 {
                   "title": "Modules",
                   "iconData": OctIcons.apps,
+                  "roles":['Admin'],
                   "page": const ModulesPage()
                 },
                 {
-                  "title": "Curriculum",
-                  "iconData": OctIcons.file,
-                  "page": Container()
-                },
-                {
-                  "title": "Carry",
-                  "iconData": OctIcons.archive,
-                  "page": Container()
+                  "title": "Logout",
+                  "iconData": OctIcons.sign_out,
+                  "roles":['Admin','Lecture','Student'],
+                  "page": const LoginPage()
                 }
               ].map((item) {
-                return GestureDetector(
+                List roles = item['roles'] as List;
+                if(roles.contains(currentUserRole())){
+                     return GestureDetector(
                   onTap: () {
                     Get.to(() => item["page"] as Widget);
                   },
@@ -96,6 +100,8 @@ Widget drawer() {
                     ),
                   ),
                 );
+                }
+                return  Container();
               }).toList()),
             )
           ],

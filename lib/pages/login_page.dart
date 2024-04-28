@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import
 
 import 'package:elms/controllers/user_controller.dart';
+import 'package:elms/pages/change_password.dart';
 import 'package:elms/pages/home_page.dart';
 import 'package:elms/utils/app_colors.dart';
 import 'package:elms/widgets/custom_button.dart';
@@ -110,12 +111,18 @@ class _LoginPageState extends State<LoginPage> {
                                     if (user.password ==
                                         passwordController.text) {
                                       userController.loggedInAs = user;
+                                      userController.selectedUser = user;
                                       FirebaseAuth.instance
                                           .signInWithEmailAndPassword(
                                               email: emailController.text,
                                               password:
                                                   passwordController.text);
-                                      Get.to(() => const HomePage());
+                                                  if(user.password == "123456"){
+                                                    Get.to(() => const ChangePassword());
+                                                  }else{
+                                                    Get.to(() => const HomePage());
+
+                                                  }
                                     } else {
                                       Get.snackbar("Wrong password",
                                           "Your have entered the wrong password");

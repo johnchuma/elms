@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elms/controllers/module_controller.dart';
+import 'package:elms/controllers/user_controller.dart';
 import 'package:elms/models/group.dart';
 
 import 'package:get/get.dart';
@@ -13,6 +14,7 @@ class GroupController extends GetxController {
   Rx<Group?> selectedGroup = Rx<Group?>(null);
   Group? loggedInAs;
   ModuleController moduleController = Get.find();
+  UserController userController = Get.find();
 
   Stream<List<Group>> getGroups() {
     return firestore
@@ -30,15 +32,16 @@ class GroupController extends GetxController {
     });
   }
 
-  Future<Group?> findGroup({email}) async {
+  Future<Group?> findMyGroup() async {
     try {
-      var groupdocuments = await firestore.collection("groups").doc(email).get();
-      if (groupdocuments.exists) {
-        return Group.fromDocumentSnapshot(groupdocuments);
+      var groupdocuments = await firestore.collection("groups").where("students",arrayContains: userController.loggedInAs?.id).get();
+      if (groupdocuments.docs.isNotEmpty) {
+        return Group.fromDocumentSnapshot(groupdocuments.docs.first);
       }
       return null;
-    } catch (e) {}
-    return null;
+    } catch (e) {
+       rethrow;
+    }
   }
 
   Future<void> addGroup({name}) async {

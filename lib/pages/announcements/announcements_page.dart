@@ -4,6 +4,7 @@ import 'package:elms/controllers/user_controller.dart';
 import 'package:elms/pages/announcements/add_announcement.dart';
 import 'package:elms/pages/announcements/edit_announcement.dart';
 import 'package:elms/utils/colors.dart';
+import 'package:elms/utils/find_my_role.dart';
 import 'package:elms/utils/format_date.dart';
 import 'package:elms/widgets/appbar.dart';
 import 'package:elms/widgets/muted.dart';
@@ -32,6 +33,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: appbar(context, title: "Announcements", actions: [
+        if(currentUserRole() == "Lecture")
         GestureDetector(
             onTap: () {
               Get.to(() => const AddAnnouncement());
@@ -55,8 +57,10 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
                       children: find.announcements
                           .map((item) => GestureDetector(
                                 onTap: () {
-                                  find.selectedAnnouncement.value = item;
-                                  Get.to(()=>const EditAnnouncement());
+                                  if(currentUserRole() == "Lecture"){
+                                    find.selectedAnnouncement.value = item;
+                                    Get.to(()=>const EditAnnouncement());
+                                  }
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.only(bottom: 10),

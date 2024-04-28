@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:elms/controllers/group_controller.dart';
 import 'package:elms/controllers/module_controller.dart';
 import 'package:elms/models/message.dart';
+import 'package:elms/pages/edit_user.dart';
 import 'package:get/get.dart';
 
 class MessageController extends GetxController {
@@ -48,6 +49,8 @@ class MessageController extends GetxController {
       await firestore.collection("messages").doc(id).set({
         "id": id,
         "message": message,
+        "userName":userController.loggedInAs?.name,
+        "userId":userController.loggedInAs?.id,
         "groupId": groupController.selectedGroup.value?.id,
         "moduleId": moduleController.selectedModule.value?.id,
         "createdAt": Timestamp.now()

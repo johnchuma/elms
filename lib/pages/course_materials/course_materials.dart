@@ -4,6 +4,8 @@ import 'package:elms/controllers/course_material_controller.dart';
 import 'package:elms/pages/course_materials/add_course_material.dart';
 import 'package:elms/pages/course_materials/edit_course_material.dart';
 import 'package:elms/utils/colors.dart';
+import 'package:elms/utils/file_downloader.dart';
+import 'package:elms/utils/find_my_role.dart';
 import 'package:elms/utils/format_date.dart';
 import 'package:elms/utils/get_extension_from_path.dart';
 import 'package:elms/widgets/appbar.dart';
@@ -14,6 +16,8 @@ import 'package:elms/widgets/muted.dart';
 import 'package:elms/widgets/paragraph.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:open_file/open_file.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CourseMaterials extends StatefulWidget {
   const CourseMaterials({super.key});
@@ -34,6 +38,7 @@ class _CourseMaterialsState extends State<CourseMaterials> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: appbar(context, title: "Course Materials", actions: [
+        if(currentUserRole() == "Lecture")
         GestureDetector(
             onTap: () {
               Get.to(() => const AddCourseMaterial());
@@ -62,7 +67,11 @@ class _CourseMaterialsState extends State<CourseMaterials> {
                                       widget: Column(
                                     children: [
                                       heading("Menu"),
-                                      menuItem(title: "View material"),
+                                      menuItem(title: "View material",onTap: (){
+                                        Get.back();
+                                        downloadFile(link: item.link,name: item.path);
+                                      }),
+                                      if(currentUserRole() == "Lecture")
                                       menuItem(
                                           title: "Edit material",
                                           onTap: () {

@@ -5,6 +5,7 @@ import 'package:elms/pages/quiz/edit_quiz.dart';
 import 'package:elms/pages/quiz/quiz_submission.dart';
 import 'package:elms/pages/quiz/view_quiz_submissions.dart';
 import 'package:elms/utils/colors.dart';
+import 'package:elms/utils/find_my_role.dart';
 import 'package:elms/utils/format_date.dart';
 import 'package:elms/utils/get_extension_from_path.dart';
 import 'package:elms/widgets/appbar.dart';
@@ -36,6 +37,7 @@ class _QuizzesAndTestsState extends State<QuizzesAndTests> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: appbar(context, title: "Quizes and tests", actions: [
+        if(currentUserRole() == "Lecture")
         GestureDetector(
             onTap: () {
               Get.to(() => const AddQuiz());
@@ -66,6 +68,7 @@ class _QuizzesAndTestsState extends State<QuizzesAndTests> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       heading("Menu"),
+                                      if(currentUserRole() == "Lecture")
                                       menuItem(
                                           title: "View submissions",
                                           onTap: () {
@@ -80,6 +83,7 @@ class _QuizzesAndTestsState extends State<QuizzesAndTests> {
                                             Get.to(
                                                 () => const QuizSubmission());
                                           }),
+                                      if(currentUserRole() == "Lecture")
                                       menuItem(
                                           title: "Edit quiz",
                                           onTap: () {

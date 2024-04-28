@@ -7,6 +7,7 @@ import 'package:elms/controllers/user_controller.dart';
 import 'package:elms/models/quiz.dart';
 import 'package:elms/models/submission.dart';
 import 'package:elms/utils/colors.dart';
+import 'package:elms/utils/file_downloader.dart';
 import 'package:elms/utils/format_date.dart';
 import 'package:elms/utils/get_extension_from_path.dart';
 import 'package:elms/utils/pick_file.dart';
@@ -151,23 +152,28 @@ class _QuizSubmissionLectureState extends State<QuizSubmissionLecture> {
                                 height: 20,
                               ),
                               submission != null
-                                  ? SizedBox(
-                                      width: double.infinity,
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 70,
-                                            child: Image.asset(
-                                                getExtensionFromPath(
-                                                    submission.path)),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          mutedText(submission.path)
-                                        ],
+                                  ? GestureDetector(
+                                    onTap: (){
+                                        downloadFile(link: submission?.link,name: submission?.path);
+                                    },
+                                    child: SizedBox(
+                                        width: double.infinity,
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 70,
+                                              child: Image.asset(
+                                                  getExtensionFromPath(
+                                                      submission.path)),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            mutedText(submission.path)
+                                          ],
+                                        ),
                                       ),
-                                    )
+                                  )
                                   : Container(),
                             ]),
                       ),

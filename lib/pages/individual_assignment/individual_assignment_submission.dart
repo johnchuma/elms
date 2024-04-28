@@ -7,6 +7,7 @@ import 'package:elms/controllers/user_controller.dart';
 import 'package:elms/models/individual_assignment.dart';
 import 'package:elms/models/submission.dart';
 import 'package:elms/utils/colors.dart';
+import 'package:elms/utils/file_downloader.dart';
 import 'package:elms/utils/format_date.dart';
 import 'package:elms/utils/get_extension_from_path.dart';
 import 'package:elms/utils/get_link.dart';
@@ -17,6 +18,7 @@ import 'package:elms/widgets/heading.dart';
 import 'package:elms/widgets/muted.dart';
 import 'package:elms/widgets/paragraph.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class IndividualAssignmentSubmission extends StatefulWidget {
@@ -74,30 +76,35 @@ class _IndividualAssignmentSubmissionState
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: border)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              heading(individualassignment?.title),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              mutedText("Document"),
-                              paragraph(individualassignment?.path,
-                                  color: Colors.green),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              mutedText("Deadline"),
-                              paragraph(formatDate(
-                                  individualassignment!.deadline.toDate()))
-                            ]),
+                    GestureDetector(
+                      onTap: (){
+                            downloadFile(link: individualassignment.link,name: individualassignment.path);
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: border)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                heading(individualassignment?.title),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                mutedText("Document"),
+                                paragraph(individualassignment?.path,
+                                    color: Colors.green),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                mutedText("Deadline"),
+                                paragraph(formatDate(
+                                    individualassignment!.deadline.toDate()))
+                              ]),
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -154,23 +161,28 @@ class _IndividualAssignmentSubmissionState
                                 height: 20,
                               ),
                               submission != null
-                                  ? SizedBox(
-                                      width: double.infinity,
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 70,
-                                            child: Image.asset(
-                                                getExtensionFromPath(
-                                                    submission.path)),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          mutedText(submission.path)
-                                        ],
+                                  ? GestureDetector(
+                                    onTap: (){
+                                        downloadFile(link: submission?.link,name: submission?.path);
+                                    },
+                                    child: SizedBox(
+                                        width: double.infinity,
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 70,
+                                              child: Image.asset(
+                                                  getExtensionFromPath(
+                                                      submission.path)),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            mutedText(submission.path)
+                                          ],
+                                        ),
                                       ),
-                                    )
+                                  )
                                   : file != null
                                       ? customButton("Submit", loading: loading,
                                           onClick: () {

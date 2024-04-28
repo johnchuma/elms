@@ -1,6 +1,8 @@
 // ignore_for_file: avoid_unnecessary_containers
 
+import 'package:elms/controllers/assigned_module_controller.dart';
 import 'package:elms/controllers/module_controller.dart';
+import 'package:elms/pages/edit_module.dart';
 import 'package:elms/pages/module_page.dart';
 import 'package:elms/utils/app_colors.dart';
 import 'package:elms/widgets/drawer.dart';
@@ -20,9 +22,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  ModuleController moduleController = ModuleController();
   @override
   void initState() {
-    Get.put(ModuleController());
+    Get.put(moduleController);
     super.initState();
   }
 
@@ -39,8 +42,8 @@ class _HomePageState extends State<HomePage> {
         title: heading("Dashboard"),
         actions: const [],
       ),
-      body: GetX<ModuleController>(
-          init: ModuleController(),
+      body: GetX<AssignedModuleController>(
+          init: AssignedModuleController(),
           builder: (find) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -66,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                         children: find.modules
                             .map((item) => GestureDetector(
                                   onTap: () {
-                                    find.selectedModule.value = item;
+                                    moduleController.selectedModule.value = item;
                                     Get.to(() => ModulePage());
                                   },
                                   child: ClipRRect(

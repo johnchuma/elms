@@ -2,6 +2,8 @@ import 'package:elms/controllers/tutorial_controller.dart';
 import 'package:elms/pages/tutorials/add_tutorial.dart';
 import 'package:elms/pages/tutorials/edit_tutorial.dart';
 import 'package:elms/utils/colors.dart';
+import 'package:elms/utils/file_downloader.dart';
+import 'package:elms/utils/find_my_role.dart';
 import 'package:elms/utils/format_date.dart';
 import 'package:elms/utils/get_extension_from_path.dart';
 import 'package:elms/widgets/appbar.dart';
@@ -32,6 +34,7 @@ class _TutorialsState extends State<TutorialsPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: appbar(context, title: "Tutorials", actions: [
+        if(currentUserRole() == "Lecture")
         GestureDetector(
             onTap: () {
               Get.to(() => const AddTutorial());
@@ -60,7 +63,11 @@ class _TutorialsState extends State<TutorialsPage> {
                                       widget: Column(
                                     children: [
                                       heading("Menu"),
-                                      menuItem(title: "View material"),
+                                      menuItem(title: "View material",onTap: (){
+                                        Get.back();
+                                        downloadFile(link: item.link,name: item.path);
+                                      }),
+                                      if(currentUserRole() == "Lecture")
                                       menuItem(
                                           title: "Edit material",
                                           onTap: () {

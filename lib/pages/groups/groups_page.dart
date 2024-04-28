@@ -5,6 +5,7 @@ import 'package:elms/pages/groups/add_group.dart';
 import 'package:elms/pages/groups/assign_students_to_group.dart';
 import 'package:elms/pages/groups/edit_group.dart';
 import 'package:elms/utils/colors.dart';
+import 'package:elms/utils/find_my_role.dart';
 import 'package:elms/utils/format_date.dart';
 import 'package:elms/widgets/appbar.dart';
 import 'package:elms/widgets/bottomsheet_template.dart';
@@ -37,6 +38,7 @@ class _GroupsPageState extends State<GroupsPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: appbar(context, title: "Groups", actions: [
+        if(currentUserRole() == "Lecture")
         GestureDetector(
             onTap: () {
               Get.to(() => const AddGroup());
@@ -66,6 +68,7 @@ class _GroupsPageState extends State<GroupsPage> {
                                   menuItem(title: "Group members",onTap: (){
                                      Get.to(()=>const AssignStudentToGroup());
                                   }),
+                                      if(currentUserRole() == "Lecture")
                                   menuItem(title: "Edit group",onTap: (){
                                      Get.to(()=>const EditGroup());
                                   })
