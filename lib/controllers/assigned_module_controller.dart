@@ -6,33 +6,51 @@ import 'package:elms/models/module.dart';
 import 'package:get/get.dart';
 
 class AssignedModuleController extends GetxController {
-  Rx<List<Module>> modulesReceiver = Rx<List<Module>>([]);
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  List<Module> get modules => modulesReceiver.value;
+  Rx<List<Module>> studentModulesReceiver = Rx<List<Module>>([]);
+  List<Module> get studentsModules => studentModulesReceiver.value;
+  Rx<List<Module>> teachersModulesReceiver = Rx<List<Module>>([]);
+  List<Module> get teachersModules => teachersModulesReceiver.value;
   Rx<Module?> selectedModule = Rx<Module?>(null);
   UserController userController = Get.find();
   Module? loggedInAs;
 
-  Stream<List<Module>> getModules() {
+  Stream<List<Module>> getModulesAsTeacher() {
     return firestore
-        .collection("modules").
-        where("students",arrayContains: userController.loggedInAs?.id)
+        .collection("modules")
+        .where("teachers",arrayContains: userController.loggedInAs?.id)
         .orderBy("createdAt", descending: true)
         .snapshots()
         .asyncMap((QuerySnapshot querySnapshot) async {
-      List<Module> modules = [];
-      for (var element in querySnapshot.docs) {
-        Module module = Module.fromDocumentSnapshot(element);
-        modules.add(module);
-      }
-      return modules;
+          List<Module> modules = [];
+          for (var element in querySnapshot.docs) {
+            Module module = Module.fromDocumentSnapshot(element);
+            modules.add(module);
+          }
+          return modules;
     });
   }
 
+  Stream<List<Module>> getModulesAsStudent() {
+    return firestore
+        .collection("modules")
+        .where("students",arrayContains: userController.loggedInAs?.id)
+        .orderBy("createdAt", descending: true)
+        .snapshots()
+        .asyncMap((QuerySnapshot querySnapshot) async {
+          List<Module> modules = [];
+          for (var element in querySnapshot.docs) {
+            Module module = Module.fromDocumentSnapshot(element);
+            modules.add(module);
+          }
+          return modules;
+    });
+  }
 
   @override
   void onInit() {
-    modulesReceiver.bindStream(getModules());
+    studentModulesReceiver.bindStream(getModulesAsStudent());
+    teachersModulesReceiver.bindStream(getModulesAsTeacher());
     super.onInit();
   }
 }

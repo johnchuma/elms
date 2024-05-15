@@ -8,7 +8,7 @@ Widget paragraph(text,
     maxLines: maxLines ?? 100,
     overflow: TextOverflow.ellipsis,
     textAlign: textAlign ?? TextAlign.start,
-    style: GoogleFonts.josefinSans(
+    style: GoogleFonts.sen(
         fontWeight: fontWeight ?? FontWeight.normal,
         fontSize: fontSize ?? 16,
         color: color ?? Colors.black87),

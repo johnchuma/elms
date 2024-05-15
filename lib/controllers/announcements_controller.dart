@@ -6,6 +6,7 @@ import 'package:elms/models/announcement.dart';
 import 'package:get/get.dart';
 
 class AnnouncementController extends GetxController {
+  
   Rx<List<Announcement>> announcementsReceiver = Rx<List<Announcement>>([]);
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   List<Announcement> get announcements => announcementsReceiver.value;

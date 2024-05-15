@@ -5,7 +5,6 @@ class Message {
   late String groupId;
   late String userName;
   late String userId;
-
   late String moduleId;
   late String id;
   late Timestamp createdAt;

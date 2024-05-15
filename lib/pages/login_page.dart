@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    Get.put(userController);
+    Get.put(UserController());
     super.initState();
   }
 
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                               const SizedBox(
                                 height: 20,
                               ),
-                              heading("Login to continue...", fontSize: 23),
+                              heading("Login to continue", fontSize: 23),
                               const SizedBox(
                                 height: 20,
                               ),
@@ -110,6 +110,8 @@ class _LoginPageState extends State<LoginPage> {
                                   if (user != null) {
                                     if (user.password ==
                                         passwordController.text) {
+                                      userController.loggedInAs = null;
+                                      userController.selectedUser = null;
                                       userController.loggedInAs = user;
                                       userController.selectedUser = user;
                                       FirebaseAuth.instance
@@ -117,12 +119,15 @@ class _LoginPageState extends State<LoginPage> {
                                               email: emailController.text,
                                               password:
                                                   passwordController.text);
-                                                  if(user.password == "123456"){
-                                                    Get.to(() => const ChangePassword());
-                                                  }else{
-                                                    Get.to(() => const HomePage());
+                                      if (user.password == "123456") {
+                                        Get.to(() => const ChangePassword());
+                                      } else {
+                                        emailController.text = "";
+                                        print(userController.loggedInAs?.role);
+                                        print(userController.selectedUser?.role);
 
-                                                  }
+                                        Get.to(() => const HomePage());
+                                      }
                                     } else {
                                       Get.snackbar("Wrong password",
                                           "Your have entered the wrong password");

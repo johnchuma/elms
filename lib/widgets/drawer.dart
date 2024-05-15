@@ -69,7 +69,16 @@ Widget drawer() {
                 if(roles.contains(currentUserRole())){
                      return GestureDetector(
                   onTap: () {
-                    Get.to(() => item["page"] as Widget);
+                    if(item['title']!="Dashboard"){
+                      Get.to(() => item["page"] as Widget);
+                    }
+                    else if(item['title']=="Logout"){
+                      Navigator.pop(context);
+                      Get.back();
+                    }
+                    else{
+                      Navigator.pop(context);
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 10),

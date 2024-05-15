@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            textTheme: GoogleFonts.josefinSansTextTheme(),
+            textTheme: GoogleFonts.senTextTheme(),
             primaryColor: Colors.blueAccent),
         home: FutureBuilder(
             future: Future.delayed(const Duration(seconds: 5)),

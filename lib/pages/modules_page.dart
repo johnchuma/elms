@@ -118,7 +118,7 @@ class _ModulesPageState extends State<ModulesPage> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  heading(e.name),
+                                                  heading(e.name,fontSize: 16,fontWeight: FontWeight.w400),
                                                   mutedText(
                                                       text:
                                                           "${e.department} ${e.code}")

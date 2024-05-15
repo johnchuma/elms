@@ -5,7 +5,6 @@ class Tutorial {
   late String link;
   late String path;
   late String introduction;
-
   late String moduleId;
   late String id;
   late Timestamp createdAt;
