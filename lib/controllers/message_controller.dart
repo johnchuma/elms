@@ -49,8 +49,8 @@ class MessageController extends GetxController {
       await firestore.collection("messages").doc(id).set({
         "id": id,
         "message": message,
-        "userName":userController.loggedInAs?.name,
-        "userId":userController.loggedInAs?.id,
+        "userName":userController.loggedInAs.value?.name,
+        "userId":userController.loggedInAs.value?.id,
         "groupId": groupController.selectedGroup.value?.id,
         "moduleId": moduleController.selectedModule.value?.id,
         "createdAt": Timestamp.now()

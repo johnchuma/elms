@@ -33,7 +33,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: appbar(context, title: "Announcements", actions: [
-        if(currentUserRole() == "Lecture")
+        if(userController.loggedInAs.value?.role == "Lecture")
         GestureDetector(
             onTap: () {
               Get.to(() => const AddAnnouncement());
@@ -57,7 +57,7 @@ class _AnnouncementsPageState extends State<AnnouncementsPage> {
                       children: find.announcements
                           .map((item) => GestureDetector(
                                 onTap: () {
-                                  if(currentUserRole() == "Lecture"){
+                                  if(userController.loggedInAs.value?.role == "Lecture"){
                                     find.selectedAnnouncement.value = item;
                                     Get.to(()=>const EditAnnouncement());
                                   }

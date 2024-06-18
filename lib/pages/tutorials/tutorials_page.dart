@@ -34,7 +34,7 @@ class _TutorialsState extends State<TutorialsPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: appbar(context, title: "Tutorials", actions: [
-        if(currentUserRole() == "Lecture")
+        if(userController.loggedInAs.value?.role == "Lecture")
         GestureDetector(
             onTap: () {
               Get.to(() => const AddTutorial());
@@ -67,7 +67,7 @@ class _TutorialsState extends State<TutorialsPage> {
                                         Get.back();
                                         downloadFile(link: item.link,name: item.path);
                                       }),
-                                      if(currentUserRole() == "Lecture")
+                                      if(userController.loggedInAs.value?.role == "Lecture")
                                       menuItem(
                                           title: "Edit material",
                                           onTap: () {

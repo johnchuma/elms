@@ -1,3 +1,4 @@
+import 'package:elms/controllers/auth_controlller.dart';
 import 'package:elms/controllers/user_controller.dart';
 import 'package:elms/pages/home_page.dart';
 import 'package:elms/pages/login_page.dart';
@@ -13,6 +14,8 @@ import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 Widget drawer() {
+  AuthController authController = Get.find();
+  UserController userController = Get.find();
   return Builder(builder: (context) {
     return AnnotatedRegion(
       value:
@@ -66,19 +69,20 @@ Widget drawer() {
                 }
               ].map((item) {
                 List roles = item['roles'] as List;
-                if(roles.contains(currentUserRole())){
+                if(roles.contains(userController.loggedInAs.value?.role)){
                      return GestureDetector(
                   onTap: () {
-                    if(item['title']!="Dashboard"){
+                    if(item['title']=="Logout"){
+                      authController.auth.signOut();
+                    }else{
+                      if(item['title']!="Dashboard"){
                       Get.to(() => item["page"] as Widget);
+                      }
+                      else{
+                        Navigator.pop(context);
+                      }
                     }
-                    else if(item['title']=="Logout"){
-                      Navigator.pop(context);
-                      Get.back();
-                    }
-                    else{
-                      Navigator.pop(context);
-                    }
+                    
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 10),

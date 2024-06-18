@@ -46,7 +46,7 @@ class _QuizSubmissionState extends State<QuizSubmission> {
         child: StreamBuilder<List<Submission>>(
             stream: firestore
                 .collection("submissions")
-                .where("userId", isEqualTo: userController.loggedInAs?.id)
+                .where("userId", isEqualTo: userController.loggedInAs.value?.id)
                 .where("referenceId",
                     isEqualTo: quizController.selectedQuiz.value?.id)
                 .snapshots()
@@ -195,21 +195,21 @@ class _QuizSubmissionState extends State<QuizSubmission> {
                                                         .last,
                                                     refrenceId: quiz.id,
                                                     userName: userController
-                                                        .loggedInAs?.name,
+                                                        .loggedInAs.value?.name,
                                                     userId: userController
-                                                        .loggedInAs?.id);
+                                                        .loggedInAs.value?.id);
                                           });
                                           quizController.updateQuiz({
                                             "students": [
                                               ...quiz.students,
-                                              userController.loggedInAs?.id
+                                              userController.loggedInAs.value?.id
                                             ]
                                           }).then((value) {
                                             setState(() {
                                               quizController.selectedQuiz.value
                                                   ?.students = [
                                                 ...quiz.students,
-                                                userController.loggedInAs?.id
+                                                userController.loggedInAs.value?.id
                                               ];
                                             });
                                           });

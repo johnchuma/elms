@@ -18,7 +18,6 @@ class StudentsPage extends StatefulWidget {
 class _StudentsPageState extends State<StudentsPage> {
   @override
   void initState() {
-    Get.put(UserController());
     super.initState();
   }
 

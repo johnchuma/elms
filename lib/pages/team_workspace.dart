@@ -8,10 +8,7 @@ import 'package:elms/widgets/default_appbar.dart';
 import 'package:elms/widgets/heading.dart';
 import 'package:elms/widgets/muted.dart';
 import 'package:elms/widgets/paragraph.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 // ignore: must_be_immutable
@@ -58,7 +55,7 @@ ScrollController scrollController = ScrollController();
                           padding: const EdgeInsets.only(bottom: 10),
                           child: Builder(
                             builder: (context) {
-                              bool isMe = e.userId == userController.loggedInAs!.id;
+                              bool isMe = e.userId == userController.loggedInAs.value!.id;
                               return Container(
                                 width: MediaQuery.of(context).size.width -100,
                                 child: Align(

@@ -18,7 +18,7 @@ class AssignedModuleController extends GetxController {
   Stream<List<Module>> getModulesAsTeacher() {
     return firestore
         .collection("modules")
-        .where("teachers",arrayContains: userController.loggedInAs?.id)
+        .where("teachers",arrayContains: userController.loggedInAs.value?.id)
         .orderBy("createdAt", descending: true)
         .snapshots()
         .asyncMap((QuerySnapshot querySnapshot) async {
@@ -34,7 +34,7 @@ class AssignedModuleController extends GetxController {
   Stream<List<Module>> getModulesAsStudent() {
     return firestore
         .collection("modules")
-        .where("students",arrayContains: userController.loggedInAs?.id)
+        .where("students",arrayContains: userController.loggedInAs.value?.id)
         .orderBy("createdAt", descending: true)
         .snapshots()
         .asyncMap((QuerySnapshot querySnapshot) async {

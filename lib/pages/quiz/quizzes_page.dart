@@ -37,7 +37,7 @@ class _QuizzesAndTestsState extends State<QuizzesAndTests> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: appbar(context, title: "Quizes and tests", actions: [
-        if(currentUserRole() == "Lecture")
+        if(userController.loggedInAs.value?.role == "Lecture")
         GestureDetector(
             onTap: () {
               Get.to(() => const AddQuiz());
@@ -68,7 +68,7 @@ class _QuizzesAndTestsState extends State<QuizzesAndTests> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       heading("Menu"),
-                                      if(currentUserRole() == "Lecture")
+                                      if(userController.loggedInAs.value?.role == "Lecture")
                                       menuItem(
                                           title: "View submissions",
                                           onTap: () {
@@ -83,7 +83,7 @@ class _QuizzesAndTestsState extends State<QuizzesAndTests> {
                                             Get.to(
                                                 () => const QuizSubmission());
                                           }),
-                                      if(currentUserRole() == "Lecture")
+                                      if(userController.loggedInAs.value?.role == "Lecture")
                                       menuItem(
                                           title: "Edit quiz",
                                           onTap: () {
@@ -127,11 +127,11 @@ class _QuizzesAndTestsState extends State<QuizzesAndTests> {
                                                 ),
                                               ),
                                               if (userController
-                                                      .loggedInAs?.role ==
+                                                      .loggedInAs.value?.role ==
                                                   "Student")
                                                 item.students.contains(
                                                         userController
-                                                            .loggedInAs?.id)
+                                                            .loggedInAs.value?.id)
                                                     ? heading("Submitted",
                                                         fontSize: 11,
                                                         color: Colors.green)

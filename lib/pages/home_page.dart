@@ -3,7 +3,7 @@ import 'package:elms/controllers/module_controller.dart';
 import 'package:elms/controllers/user_controller.dart';
 import 'package:elms/pages/module_page.dart';
 import 'package:elms/utils/app_colors.dart';
-import 'package:elms/utils/find_my_role.dart';
+import 'package:elms/utils/colors.dart';
 import 'package:elms/widgets/drawer.dart';
 import 'package:elms/widgets/muted.dart';
 import 'package:elms/widgets/paragraph.dart';
@@ -46,56 +46,94 @@ class _HomePageState extends State<HomePage> {
           builder: (find) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                child: Column(children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      mutedText("Assigned modules",fontWeight: FontWeight.w400),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Expanded(
-                    child: GridView(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisSpacing: 20,
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 20),
-                        children:[...currentUserRole()=="Students"?find.studentsModules.toList():find.teachersModules.toList()].map((item) => GestureDetector(
-                                  onTap: () {
-                                    moduleController.selectedModule.value = item;
-                                    Get.to(() => ModulePage());
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: Container(
-                                      color: AppColors.primaryColor,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          paragraph(
-                                              "${item.department} ${item.code}",
-                                              color: Colors.white),
-                                          const SizedBox(height: 10),
-                                          const Icon(
-                                            OctIcons.apps,
-                                            size: 45,
-                                            color: Colors.white,
-                                          )
-                                        ],
-                                      ),
+              child: Column(children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    mutedText("Assigned modules",fontWeight: FontWeight.w400),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                if(find.studentsModules.length+find.teachersModules.length == 0)
+                Column(children: [
+                  Image.asset("assets/nodata.png"),
+                  heading("No Assigned modules",color: mutedColor)
+                ],),
+                Expanded(
+                  child:userController.loggedInAs.value?.role=="Student"? GridView(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisSpacing: 20,
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 20),
+                      children:find.studentsModules.map((item) => 
+                      GestureDetector(
+                                onTap: () {
+                                  moduleController.selectedModule.value = item;
+                                  Get.to(() => ModulePage());
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Container(
+                                    color: AppColors.primaryColor,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        paragraph(
+                                            "${item.department} ${item.code}",
+                                            color: Colors.white),
+                                        const SizedBox(height: 10),
+                                        const Icon(
+                                          OctIcons.apps,
+                                          size: 45,
+                                          color: Colors.white,
+                                        )
+                                      ],
                                     ),
                                   ),
-                                ))
-                            .toList()),
-                  )
-                ]),
-              ),
+                                ),
+                              ))
+                          .toList()):GridView(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisSpacing: 20,
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 20),
+                      children:find.teachersModules.map((item) => 
+                      GestureDetector(
+                                onTap: () {
+                                  moduleController.selectedModule.value = item;
+                                  Get.to(() => ModulePage());
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Container(
+                                    color: AppColors.primaryColor,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        paragraph(
+                                            "${item.department} ${item.code}",
+                                            color: Colors.white),
+                                        const SizedBox(height: 10),
+                                        const Icon(
+                                          OctIcons.apps,
+                                          size: 45,
+                                          color: Colors.white,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ))
+                          .toList()),
+                )
+              ]),
             );
           }),
     );

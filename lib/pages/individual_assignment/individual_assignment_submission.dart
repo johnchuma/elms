@@ -49,7 +49,7 @@ class _IndividualAssignmentSubmissionState
         child: StreamBuilder<List<Submission>>(
             stream: firestore
                 .collection("submissions")
-                .where("userId", isEqualTo: userController.loggedInAs?.id)
+                .where("userId", isEqualTo: userController.loggedInAs.value?.id)
                 .where("referenceId",
                     isEqualTo: individualassignmentController
                         .selectedIndividualAssignment.value?.id)
@@ -202,15 +202,15 @@ class _IndividualAssignmentSubmissionState
                                                     refrenceId:
                                                         individualassignment.id,
                                                     userName: userController
-                                                        .loggedInAs?.name,
+                                                        .loggedInAs.value?.name,
                                                     userId: userController
-                                                        .loggedInAs?.id);
+                                                        .loggedInAs.value?.id);
                                           });
                                           individualassignmentController
                                               .updateIndividualAssignment({
                                             "students": [
                                               ...individualassignment.students,
-                                              userController.loggedInAs?.id
+                                              userController.loggedInAs.value?.id
                                             ]
                                           }).then((value) {
                                             setState(() {
@@ -220,7 +220,7 @@ class _IndividualAssignmentSubmissionState
                                                   ?.students = [
                                                 ...individualassignment
                                                     .students,
-                                                userController.loggedInAs?.id
+                                                userController.loggedInAs.value?.id
                                               ];
                                             });
                                           });

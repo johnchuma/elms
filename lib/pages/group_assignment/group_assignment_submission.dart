@@ -49,7 +49,7 @@ class _GroupAssignmentSubmissionState extends State<GroupAssignmentSubmission> {
         child: StreamBuilder<List<Submission>>(
             stream: firestore
                 .collection("submissions")
-                .where("userId", isEqualTo: userController.loggedInAs?.id)
+                .where("userId", isEqualTo: userController.loggedInAs.value?.id)
                 .where("referenceId",
                     isEqualTo: groupassignmentController
                         .selectedGroupAssignment.value?.id)
@@ -202,15 +202,15 @@ class _GroupAssignmentSubmissionState extends State<GroupAssignmentSubmission> {
                                                     refrenceId:
                                                         groupassignment.id,
                                                     userName: userController
-                                                        .loggedInAs?.name,
+                                                        .loggedInAs.value?.name,
                                                     userId: userController
-                                                        .loggedInAs?.id);
+                                                        .loggedInAs.value?.id);
                                           });
                                           groupassignmentController
                                               .updateGroupAssignment({
                                             "students": [
                                               ...groupassignment.students,
-                                              userController.loggedInAs?.id
+                                              userController.loggedInAs.value?.id
                                             ]
                                           }).then((value) {
                                             setState(() {
@@ -219,7 +219,7 @@ class _GroupAssignmentSubmissionState extends State<GroupAssignmentSubmission> {
                                                   .value
                                                   ?.students = [
                                                 ...groupassignment.students,
-                                                userController.loggedInAs?.id
+                                                userController.loggedInAs.value?.id
                                               ];
                                             });
                                           });

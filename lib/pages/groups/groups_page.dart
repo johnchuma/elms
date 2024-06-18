@@ -38,7 +38,7 @@ class _GroupsPageState extends State<GroupsPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: appbar(context, title: "Groups", actions: [
-        if(currentUserRole() == "Lecture")
+        if(userController.loggedInAs.value?.role == "Lecture")
         GestureDetector(
             onTap: () {
               Get.to(() => const AddGroup());
@@ -68,7 +68,7 @@ class _GroupsPageState extends State<GroupsPage> {
                                   menuItem(title: "Group members",onTap: (){
                                      Get.to(()=>const AssignStudentToGroup());
                                   }),
-                                      if(currentUserRole() == "Lecture")
+                                      if(userController.loggedInAs.value?.role == "Lecture")
                                   menuItem(title: "Edit group",onTap: (){
                                      Get.to(()=>const EditGroup());
                                   })

@@ -40,7 +40,7 @@ class _GroupAssignmentsState extends State<GroupAssignments> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 250, 250, 250),
       appBar: appbar(context, title: "Group Assignments", actions: [
-        if(currentUserRole() == "Lecture")
+        if(userController.loggedInAs.value?.role == "Lecture")
         GestureDetector(
             onTap: () {
               Get.to(() => const AddGroupAssignment());
@@ -72,7 +72,7 @@ class _GroupAssignmentsState extends State<GroupAssignments> {
                                     children: [
                                       heading("Menu"),
 
-                                      if(currentUserRole() == "Lecture")
+                                      if(userController.loggedInAs.value?.role == "Lecture")
                                       menuItem(
                                           title: "View submissions",
                                           onTap: () {
@@ -87,7 +87,7 @@ class _GroupAssignmentsState extends State<GroupAssignments> {
                                             Get.to(() =>
                                                 const GroupAssignmentSubmission());
                                           }),
-                                      if(currentUserRole() == "Lecture")
+                                      if(userController.loggedInAs.value?.role == "Lecture")
                                       menuItem(
                                           title: "Edit assignment",
                                           onTap: () {
@@ -132,11 +132,11 @@ class _GroupAssignmentsState extends State<GroupAssignments> {
                                                 ),
                                               ),
                                               if (userController
-                                                      .loggedInAs?.role ==
+                                                      .loggedInAs.value?.role ==
                                                   "Student")
                                                 item.students.contains(
                                                         userController
-                                                            .loggedInAs?.id)
+                                                            .loggedInAs.value?.id)
                                                     ? heading("Submitted",
                                                         fontSize: 11,
                                                         color: Colors.green)

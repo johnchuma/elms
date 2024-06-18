@@ -96,7 +96,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                               "password": passwordController.text,
                             }).then((value) {
                               User user = FirebaseAuth.instance.currentUser!;
-                              user.reauthenticateWithCredential(EmailAuthProvider.credential(email: userController.loggedInAs!.email, password: userController.loggedInAs!.password));
+                              user.reauthenticateWithCredential(EmailAuthProvider.credential(email: userController.loggedInAs.value!.email, password: userController.loggedInAs.value!.password));
                               user.updatePassword(passwordController.text);
                                   
                               Get.back();

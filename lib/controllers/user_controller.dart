@@ -7,8 +7,7 @@ class UserController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   List<User> get users => usersReceiver.value;
   User? selectedUser;
-  User? loggedInAs;
-
+  Rx<User?> loggedInAs = Rx<User?>(null);
   Stream<List<User>> getUsers() {
     return firestore
         .collection("users")

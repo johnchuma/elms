@@ -3,6 +3,7 @@
 import 'package:elms/controllers/user_controller.dart';
 import 'package:elms/pages/change_password.dart';
 import 'package:elms/pages/home_page.dart';
+import 'package:elms/pages/waypage.dart';
 import 'package:elms/utils/app_colors.dart';
 import 'package:elms/widgets/custom_button.dart';
 import 'package:elms/widgets/paragraph.dart';
@@ -21,13 +22,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  UserController userController = UserController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
   void initState() {
-    Get.put(UserController());
     super.initState();
   }
 
@@ -110,24 +109,12 @@ class _LoginPageState extends State<LoginPage> {
                                   if (user != null) {
                                     if (user.password ==
                                         passwordController.text) {
-                                      userController.loggedInAs = null;
-                                      userController.selectedUser = null;
-                                      userController.loggedInAs = user;
-                                      userController.selectedUser = user;
-                                      FirebaseAuth.instance
+                                        FirebaseAuth.instance
                                           .signInWithEmailAndPassword(
                                               email: emailController.text,
                                               password:
                                                   passwordController.text);
-                                      if (user.password == "123456") {
-                                        Get.to(() => const ChangePassword());
-                                      } else {
-                                        emailController.text = "";
-                                        print(userController.loggedInAs?.role);
-                                        print(userController.selectedUser?.role);
-
-                                        Get.to(() => const HomePage());
-                                      }
+                                      // Get.to(()=>const WayPage());
                                     } else {
                                       Get.snackbar("Wrong password",
                                           "Your have entered the wrong password");

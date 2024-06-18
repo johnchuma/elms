@@ -34,7 +34,7 @@ class GroupController extends GetxController {
 
   Future<Group?> findMyGroup() async {
     try {
-      var groupdocuments = await firestore.collection("groups").where("students",arrayContains: userController.loggedInAs?.id).get();
+      var groupdocuments = await firestore.collection("groups").where("students",arrayContains: userController.loggedInAs.value?.id).get();
       if (groupdocuments.docs.isNotEmpty) {
         return Group.fromDocumentSnapshot(groupdocuments.docs.first);
       }
