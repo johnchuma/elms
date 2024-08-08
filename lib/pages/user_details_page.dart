@@ -2,12 +2,9 @@
 
 import 'package:elms/controllers/auth_controlller.dart';
 import 'package:elms/controllers/user_controller.dart';
-import 'package:elms/pages/change_password.dart';
-import 'package:elms/pages/edit_user.dart';
 import 'package:elms/pages/home_page.dart';
-import 'package:flutter/foundation.dart';
+import 'package:elms/utils/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class UserDetailsPage extends StatefulWidget {
@@ -22,6 +19,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
   AuthController authController = Get.find();
  @override
   void initState() {
+    
     super.initState();
   }
   
@@ -33,11 +31,11 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
         future: userController.findUser(email: authController.auth.currentUser?.email),
         builder: (context,snapshot) {
           if(snapshot.connectionState == ConnectionState.waiting){
-            return const Center(child: CircularProgressIndicator(),);
+            return  Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
           }
          var data = snapshot.requireData;
          if(data == null){
-            return const Center(child: CircularProgressIndicator(),);
+            return  Center(child: CircularProgressIndicator(color: AppColors.primaryColor,),);
          }
         userController.loggedInAs.value = data;
           return const HomePage();

@@ -1,15 +1,21 @@
-import 'package:elms/controllers/assigned_module_controller.dart';
-import 'package:elms/controllers/module_controller.dart';
+
+
+import 'package:elms/controllers/price_controller.dart';
+import 'package:elms/controllers/record_controller.dart';
 import 'package:elms/controllers/user_controller.dart';
-import 'package:elms/pages/module_page.dart';
+import 'package:elms/pages/bloototh_discovery.dart';
+import 'package:elms/pages/groups_page.dart';
+import 'package:elms/pages/login_page.dart';
+import 'package:elms/pages/my_records.dart';
+import 'package:elms/pages/records_page.dart';
 import 'package:elms/utils/app_colors.dart';
-import 'package:elms/utils/colors.dart';
+import 'package:elms/widgets/custom_button.dart';
 import 'package:elms/widgets/drawer.dart';
-import 'package:elms/widgets/muted.dart';
-import 'package:elms/widgets/paragraph.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../widgets/heading.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,122 +26,71 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ModuleController moduleController = ModuleController();
   UserController userController = Get.find();
   @override
   void initState() {
-    Get.put(moduleController);
+  requestPermissions();
+  Get.put(PriceController());
     super.initState();
   }
-
+  requestPermissions() async{
+    await Permission.location.request();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backroundColor,
-      drawer: Drawer(
-        child: drawer(),
-      ),
+     drawer: Drawer(child: drawer(),),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.primaryColor,
+         leading: Builder(
+           builder: (context) {
+             return IconButton(
+              icon: const Icon(AntDesign.menu_outline,color: Colors.white,size: 20,),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              });
+           }
+         ),
         elevation: 0,
-        title: heading("Dashboard"),
+        title: GestureDetector(
+          onTap: (){
+            Get.to(()=>const LoginPage());
+          },
+          child: heading("Home",color: Colors.white)),
         actions: const [],
       ),
-      body: GetX<AssignedModuleController>(
-          init: AssignedModuleController(),
-          builder: (find) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    mutedText("Assigned modules",fontWeight: FontWeight.w400),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                if(find.studentsModules.length+find.teachersModules.length == 0)
-                Column(children: [
-                  Image.asset("assets/nodata.png"),
-                  heading("No Assigned modules",color: mutedColor)
-                ],),
-                Expanded(
-                  child:userController.loggedInAs.value?.role=="Student"? GridView(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisSpacing: 20,
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 20),
-                      children:find.studentsModules.map((item) => 
-                      GestureDetector(
-                                onTap: () {
-                                  moduleController.selectedModule.value = item;
-                                  Get.to(() => ModulePage());
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Container(
-                                    color: AppColors.primaryColor,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        paragraph(
-                                            "${item.department} ${item.code}",
-                                            color: Colors.white),
-                                        const SizedBox(height: 10),
-                                        const Icon(
-                                          OctIcons.apps,
-                                          size: 45,
-                                          color: Colors.white,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ))
-                          .toList()):GridView(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisSpacing: 20,
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 20),
-                      children:find.teachersModules.map((item) => 
-                      GestureDetector(
-                                onTap: () {
-                                  moduleController.selectedModule.value = item;
-                                  Get.to(() => ModulePage());
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Container(
-                                    color: AppColors.primaryColor,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        paragraph(
-                                            "${item.department} ${item.code}",
-                                            color: Colors.white),
-                                        const SizedBox(height: 10),
-                                        const Icon(
-                                          OctIcons.apps,
-                                          size: 45,
-                                          color: Colors.white,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ))
-                          .toList()),
-                )
-              ]),
-            );
-          }),
+      body: Scaffold(body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: userController.loggedInAs.value?.role == "Admin"?Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(AntDesign.user_outline,size: 100,color:AppColors.primaryColor,),
+          heading("Welcome, System Admin",color: Color.fromARGB(255, 180, 182, 181),textAlign: TextAlign.center),
+        const SizedBox(height: 20,),
+         customButton("View Groups",onClick: (){
+              Get.to(()=>const GroupsPage());
+         })
+        ],): userController.loggedInAs.value?.role == "Operator"? Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(AntDesign.user_outline,size: 100,color:AppColors.primaryColor,),
+          heading("Welcome, Group Operator",color: Color.fromARGB(255, 180, 182, 181),textAlign: TextAlign.center),
+        const SizedBox(height: 20,),
+         customButton("View Assigned Groups",onClick: (){
+              Get.to(()=>const GroupsPage());
+         })
+        ],): Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(AntDesign.user_outline,size: 100,color:AppColors.primaryColor,),
+          heading("Welcome, Farmer",color: Color.fromARGB(255, 180, 182, 181),textAlign: TextAlign.center),
+        const SizedBox(height: 20,),
+         customButton("View Records",onClick: (){
+              Get.to(()=>const MyRecords());
+         })
+        ],),
+      ),),
     );
   }
 }

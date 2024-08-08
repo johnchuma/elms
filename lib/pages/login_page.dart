@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import
 
 import 'package:elms/controllers/user_controller.dart';
+import 'package:elms/pages/add_user.dart';
 import 'package:elms/pages/change_password.dart';
 import 'package:elms/pages/home_page.dart';
 import 'package:elms/pages/waypage.dart';
@@ -22,7 +23,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
 
   @override
@@ -47,11 +49,14 @@ class _LoginPageState extends State<LoginPage> {
                   width: double.infinity,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                          height: 150, child: Image.asset('assets/dit.png')),
+                      Container(height: 100, child: Image.asset("assets/coffee.png")),
                       const SizedBox(height: 10),
-                      heading("DIT|e-LMS", color: Colors.white)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: heading("Coffee pricing and weighing management system", color: Colors.white,textAlign: TextAlign.center),
+                      )
                     ],
                   ),
                 ),
@@ -61,8 +66,8 @@ class _LoginPageState extends State<LoginPage> {
                   left: 0,
                   child: ClipRRect(
                     borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(30),
-                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(5),
+                      topLeft: Radius.circular(5),
                     ),
                     child: Container(
                       color: Colors.white,
@@ -77,17 +82,18 @@ class _LoginPageState extends State<LoginPage> {
                               const SizedBox(
                                 height: 20,
                               ),
-                              heading("Login to continue", fontSize: 23),
+                              heading("SignIn to continue", fontSize: 23),
                               const SizedBox(
                                 height: 20,
                               ),
                               TextForm(
-                                  label: "Email address",
-                                  textEditingController: emailController,
+                                  label: "Username",
+                                  textEditingController: usernameController,
                                   hint: "Enter email address"),
                               const SizedBox(
                                 height: 10,
                               ),
+                             
                               TextForm(
                                 label: "Password",
                                 textEditingController: passwordController,
@@ -98,33 +104,48 @@ class _LoginPageState extends State<LoginPage> {
                                 height: 20,
                               ),
                               customButton("Login", onClick: () async {
-                                if (emailController.text.isEmpty ||
+                                if (usernameController.text.isEmpty ||
                                     passwordController.text.isEmpty) {
                                   Get.snackbar("Empty fields",
                                       "Please fill all fields to continue");
                                 } else {
-                                  var user = await userController.findUser(
-                                      email: emailController.text);
-
+                                  // check if its valid email
+                                  try {
+                                    
+                                  var user = await userController.findUserByUsername(name: usernameController.text.trim());
+                                  print(user?.email);
                                   if (user != null) {
-                                    if (user.password ==
-                                        passwordController.text) {
-                                        FirebaseAuth.instance
-                                          .signInWithEmailAndPassword(
-                                              email: emailController.text,
-                                              password:
-                                                  passwordController.text);
+                                    if (user.password == passwordController.text) {
+                                      FirebaseAuth.instance.signInWithEmailAndPassword(
+                                        email: user.email.trim(),
+                                        password:passwordController.text,
+                                      );
                                       // Get.to(()=>const WayPage());
                                     } else {
-                                      Get.snackbar("Wrong password",
-                                          "Your have entered the wrong password");
+                                      Get.snackbar("Wrong password", "You have entered the wrong password");
                                     }
                                   } else {
-                                    Get.snackbar("Unregistered email",
-                                        "This user is not registered");
+                                    Get.snackbar("Unregistered user", "This user is not registered");
                                   }
-                                }
-                              })
+                                
+                                  } catch (e) {
+                                    print(e);
+                                    throw e;
+                                  }
+                                
+                              }},
+                              ),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.center,
+                              //   children: [
+                              //   Text("Not registered ?"),
+                              //   TextButton(
+                              //       onPressed: () {
+                              //         Get.to(()=>AddUser());
+                              //       },
+                              //       child: paragraph("Register",
+                              //           color: AppColors.primaryColor)),
+                              // ],)
                             ],
                           ),
                         ),

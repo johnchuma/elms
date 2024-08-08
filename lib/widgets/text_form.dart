@@ -33,6 +33,7 @@ Widget TextForm(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: TextFormField(
                   obscureText: isPassword,
+                  
                   initialValue: initialValue,
                   cursorColor: textColor,
                   onChanged: onChanged ?? (value) {},

@@ -10,7 +10,7 @@ Widget back(context, {Color? color}) {
           color: Colors.transparent,
           child: Icon(
             Icons.arrow_back,
-            color: color ?? mutedColor,
+            color: Colors.white,
             size: 20,
           )));
 }

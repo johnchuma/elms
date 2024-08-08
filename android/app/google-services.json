@@ -1,21 +1,22 @@
 {
   "project_info": {
-    "project_number": "930516571839",
-    "project_id": "elms-b657e",
-    "storage_bucket": "elms-b657e.appspot.com"
+    "project_number": "7724288671",
+    "firebase_url": "https://bluetooth-6d700-default-rtdb.firebaseio.com",
+    "project_id": "bluetooth-6d700",
+    "storage_bucket": "bluetooth-6d700.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:930516571839:android:6f35b21be7c4022914580a",
+        "mobilesdk_app_id": "1:7724288671:android:921e67fcc28437b459f0aa",
         "android_client_info": {
-          "package_name": "com.hasotion.elms"
+          "package_name": "com.hasotion.bluetoothapp"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC8f1JiRimQfDTzw1BBnORMRiDlVJKrTNI"
+          "current_key": "AIzaSyAjkcGKdUdviIus-TtpT6jHPCIO-KIOCZk"
         }
       ],
       "services": {

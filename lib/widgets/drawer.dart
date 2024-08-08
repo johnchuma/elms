@@ -1,12 +1,16 @@
 import 'package:elms/controllers/auth_controlller.dart';
 import 'package:elms/controllers/user_controller.dart';
+import 'package:elms/pages/famers_page.dart';
+import 'package:elms/pages/groups_page.dart';
 import 'package:elms/pages/home_page.dart';
 import 'package:elms/pages/login_page.dart';
-import 'package:elms/pages/modules_page.dart';
-import 'package:elms/pages/users_page.dart';
+import 'package:elms/pages/my_records.dart';
+import 'package:elms/pages/operators_page.dart';
+import 'package:elms/pages/price_settings.dart';
+import 'package:elms/pages/system_users.dart';
 import 'package:elms/utils/app_colors.dart';
-import 'package:elms/utils/find_my_role.dart';
 import 'package:elms/widgets/heading.dart';
+import 'package:elms/widgets/muted_text.dart';
 import 'package:elms/widgets/paragraph.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,10 +35,20 @@ Widget drawer() {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 70, child: Image.asset("assets/dit.png")),
+                    Container(height: 70, child: Image.asset("assets/coffee.png")),
                     const SizedBox(width: 10),
-                    heading("DIT|e-LMS", color: Colors.white)
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          heading("Coffee App", color: Colors.white),
+                          mutedText(text: userController.loggedInAs.value?.email,color: Colors.white)
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -46,25 +60,41 @@ Widget drawer() {
                 {
                   "title": "Dashboard",
                   "iconData": OctIcons.home,
-                  "roles":['Admin','Lecture','Student'],
+                  "roles":['Admin'],
                   "page": const HomePage()
                 },
-                {
-                  "title": "System Users",
+                 {
+                  "title": "My Records",
                   "iconData": OctIcons.people,
-                  "roles":['Admin'],
-                  "page": const StudentsPage()
+                  "roles":['Farmer'],
+                  "page": const MyRecords()
                 },
+                
                 {
-                  "title": "Modules",
-                  "iconData": OctIcons.apps,
-                  "roles":['Admin'],
-                  "page": const ModulesPage()
+                  "title": "Groups",
+                  "iconData": AntDesign.folder_open_outline,
+                  "roles":['Admin',"Operator"],
+                  "page": const GroupsPage()
                 },
+                 {
+                  "title": "Price Settings",
+                  "iconData": AntDesign.setting_outline,
+                  "roles":['Admin'],
+                  "page": const PriceSettings()
+                },
+                
+                //  {
+                //   "title": "Dashboard",
+                //   "iconData": OctIcons.home,
+                //   "roles":['Admin'],
+                //   "page": const HomePage()
+                // },
+                 
+                
                 {
                   "title": "Logout",
                   "iconData": OctIcons.sign_out,
-                  "roles":['Admin','Lecture','Student'],
+                  "roles":['Admin','Operator','Farmer'],
                   "page": const LoginPage()
                 }
               ].map((item) {

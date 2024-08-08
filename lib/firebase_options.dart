@@ -2,7 +2,7 @@
 // ignore_for_file: type=lint
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
+    show defaultTargetPlatform, TargetPlatform;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -16,18 +16,10 @@ import 'package:flutter/foundation.dart'
 /// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    if (kIsWeb) {
-      return web;
-    }
+    
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
-      case TargetPlatform.iOS:
-        return ios;
-      case TargetPlatform.macOS:
-        return macos;
-      case TargetPlatform.windows:
-        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -40,49 +32,15 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCxWiVL31xUZ3RuZckrAnjO4W4SI3sQ2jM',
-    appId: '1:930516571839:web:f87d8758ff8ca4c214580a',
-    messagingSenderId: '930516571839',
-    projectId: 'elms-b657e',
-    authDomain: 'elms-b657e.firebaseapp.com',
-    storageBucket: 'elms-b657e.appspot.com',
-    measurementId: 'G-DHXVC3K0YG',
-  );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC8f1JiRimQfDTzw1BBnORMRiDlVJKrTNI',
-    appId: '1:930516571839:android:6f35b21be7c4022914580a',
-    messagingSenderId: '930516571839',
-    projectId: 'elms-b657e',
-    storageBucket: 'elms-b657e.appspot.com',
+    apiKey: 'AIzaSyDrBFRDCkNjBGPSLQzlippc8chwI37bFjs',
+    appId: '1:7724288671:android:921e67fcc28437b459f0aa',
+    messagingSenderId: '7724288671',
+    projectId: 'bluetooth-6d700',
+    storageBucket: 'bluetooth-6d700.appspot.com',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDBssfwAwbPUz91k63prGnWMGql5DKbBhU',
-    appId: '1:930516571839:ios:cdeab513f4af590014580a',
-    messagingSenderId: '930516571839',
-    projectId: 'elms-b657e',
-    storageBucket: 'elms-b657e.appspot.com',
-    iosBundleId: 'com.example.elms',
-  );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDBssfwAwbPUz91k63prGnWMGql5DKbBhU',
-    appId: '1:930516571839:ios:cdeab513f4af590014580a',
-    messagingSenderId: '930516571839',
-    projectId: 'elms-b657e',
-    storageBucket: 'elms-b657e.appspot.com',
-    iosBundleId: 'com.example.elms',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCxWiVL31xUZ3RuZckrAnjO4W4SI3sQ2jM',
-    appId: '1:930516571839:web:e27ff6c666781b9414580a',
-    messagingSenderId: '930516571839',
-    projectId: 'elms-b657e',
-    authDomain: 'elms-b657e.firebaseapp.com',
-    storageBucket: 'elms-b657e.appspot.com',
-    measurementId: 'G-SLZJGX13NB',
-  );
+ 
 }

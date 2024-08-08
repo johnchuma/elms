@@ -1,5 +1,6 @@
 import 'package:elms/controllers/auth_controlller.dart';
 import 'package:elms/controllers/user_controller.dart';
+import 'package:elms/pages/home_page.dart';
 import 'package:elms/pages/login_page.dart';
 import 'package:elms/pages/user_details_page.dart';
 import 'package:flutter/foundation.dart';

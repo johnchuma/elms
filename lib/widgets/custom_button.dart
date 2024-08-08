@@ -6,7 +6,7 @@ Widget customButton(text, {onClick, background, loading, color}) {
   return GestureDetector(
     onTap: onClick ?? () {},
     child: ClipRRect(
-      borderRadius: BorderRadius.circular(40),
+      borderRadius: BorderRadius.circular(10),
       child: Container(
           width: double.infinity,
           color: background ?? AppColors.primaryColor,

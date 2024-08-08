@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:elms/controllers/auth_controlller.dart';
 import 'package:elms/models/user.dart';
 import 'package:get/get.dart';
 
@@ -35,17 +36,30 @@ class UserController extends GetxController {
     return null;
   }
 
-  Future<void> addUser({name, phone, email, reg, department, role}) async {
+  //find user by registration number
+  Future<User?> findUserByUsername({name}) async {
+    try {
+      var userdocuments = await firestore
+          .collection("users")
+          .where("name", isEqualTo: name)
+          .get();
+      if (userdocuments.docs.isNotEmpty) {
+        return User.fromDocumentSnapshot(userdocuments.docs.first);
+      }
+      return null;
+      // ignore: empty_catches
+    } catch (e) {}
+    return null;
+  }
+
+  Future<void> addUser({name,phone,role, email,password}) async {
     try {
       await firestore.collection("users").doc(email).set({
-        "id": email,
         "name": name,
         "email": email,
         "phone": phone,
-        "reg": reg,
-        "department": department,
-        "password": "123456",
-        "role": role,
+        "role":role??"User",
+        "password": password,
         "createdAt": Timestamp.now()
       });
     } catch (e) {
@@ -55,7 +69,9 @@ class UserController extends GetxController {
 
   Future<void> updateUser(data) async {
     try {
-      await firestore.collection("users").doc(selectedUser?.id).update(data);
+      await firestore.collection("users").doc(selectedUser?.email).update(data);
+      AuthController authController = Get.find();
+      await authController.user?.updatePassword(data["password"]);
     } catch (e) {
       rethrow;
     }
@@ -63,7 +79,7 @@ class UserController extends GetxController {
 
   Future<void> deleteUser() async {
     try {
-      await firestore.collection("users").doc(selectedUser?.id).delete();
+      await firestore.collection("users").doc(selectedUser?.email).delete();
       // ignore: empty_catches
     } catch (e) {}
   }

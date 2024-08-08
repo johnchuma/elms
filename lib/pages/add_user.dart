@@ -1,5 +1,8 @@
 // ignore_for_file: unused_import
 
+import 'dart:math';
+
+import 'package:elms/controllers/auth_controlller.dart';
 import 'package:elms/controllers/user_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,25 +26,24 @@ class AddUser extends StatefulWidget {
 
 class _AddUserState extends State<AddUser> {
   TextEditingController nameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController regController = TextEditingController();
-  TextEditingController roleController = TextEditingController(text: "Student");
-  TextEditingController departmentController =
-      TextEditingController(text: "ETE");
-
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: background,
-      appBar: appbar(context, title: "Add user"),
+      appBar: appbar(context, title: "Create a new account"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              mutedText(text: "Add new user"),
+              SizedBox(
+                height: 40,
+              ),
+              mutedText(text: "Fill your details below"),
               const SizedBox(
                 height: 10,
               ),
@@ -64,46 +66,26 @@ class _AddUserState extends State<AddUser> {
                       const SizedBox(
                         height: 10,
                       ),
-                      selectForm(
-                          onChanged: () {
-                            setState(() {});
-                          },
-                          items: ["Student", "Lecture", "Admin"]
-                              .map((e) => DropdownMenuItem(
-                                    value: e,
-                                    child: paragraph(e),
-                                  ))
-                              .toList(),
-                          textEditingController: roleController,
-                          label: "User role"),
                       TextForm(
                           hint: "Enter user name",
                           textEditingController: nameController,
                           label: "User name"),
                       TextForm(
-                          hint: "Enter user phone number",
-                          textEditingController: phoneController,
-                          label: "Phone number"),
-                      TextForm(
                           hint: "Enter user email address",
                           textEditingController: emailController,
                           label: "Email address"),
-                      if (roleController.text == "Student")
-                        TextForm(
-                            hint: "Enter user registration number",
-                            textEditingController: regController,
-                            textInputType: TextInputType.number,
-                            label: "Registration number"),
-                      if (roleController.text == "Student")
-                        selectForm(
-                            items: ["ETE", "ME", "CSE", "CE", "EE"]
-                                .map((e) => DropdownMenuItem(
-                                      value: e,
-                                      child: paragraph(e),
-                                    ))
-                                .toList(),
-                            textEditingController: departmentController,
-                            label: "Select department")
+                      TextForm(
+                          label: "Phone",
+                          textEditingController: phoneController,
+                          hint: "Enter phone number"),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextForm(
+                          hint: "Enter password",
+                          textEditingController: passwordController,
+                          isPassword: true,
+                          label: "Write password here"),
                     ],
                   ),
                 ),
@@ -111,10 +93,10 @@ class _AddUserState extends State<AddUser> {
               const SizedBox(
                 height: 20,
               ),
-              customButton("Add User",
+              customButton("Register",
                   onClick: () => {
                         if (nameController.text.isEmpty ||
-                            phoneController.text.isEmpty ||
+                            passwordController.text.isEmpty ||
                             emailController.text.isEmpty)
                           {
                             Get.snackbar("Empty field",
@@ -124,17 +106,16 @@ class _AddUserState extends State<AddUser> {
                           {
                             UserController()
                                 .addUser(
-                                    name: nameController.text,
-                                    role: roleController.text,
-                                    email: emailController.text,
-                                    department: departmentController.text,
-                                    phone: phoneController.text,
-                                    reg: regController.text)
+                              name: nameController.text,
+                              password: passwordController.text,
+                              email: emailController.text,
+                            )
                                 .then((value) {
                               FirebaseAuth.instance
                                   .createUserWithEmailAndPassword(
                                       email: emailController.text,
-                                      password: '123456');
+                                      password: passwordController.text);
+
                               Get.back();
                             })
                           }
